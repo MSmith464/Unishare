@@ -55,6 +55,7 @@ ptSelect = browser.find_element_by_xpath('/html/body/div[1]/div[1]/div/div[2]/li
 ptSelect.click()
 time.sleep(3)
 
+#select left most photo
 firstSelect = browser.find_element_by_xpath('/html/body/div[3]/div/div/div/ng-transclude/div[1]/div[1]/a[1]/img')
 firstSelect.click()
 time.sleep(4)
