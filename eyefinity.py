@@ -33,6 +33,8 @@ studyHandle = eyeBrowser.window_handles[1]
 eyeBrowser.switch_to_window(studyHandle)
 sleep(3)
 
+testFile = 'C:/Users/jmorg/Downloads/test.png'
 studyButton = eyeBrowser.find_element_by_xpath('/html/body/app-mmiimagemanagement/app-initialview/div/div[1]/div[1]/app-studylistactions/div/div[2]/div[2]/button/span').click()
 sleep(3)
-selectFile = eyeBrowser.find_element_by_xpath('/html/body/app-mmiimagemanagement/app-initialview/div/app-imageuploader/div/div/div[3]/mat-grid-list/div/mat-grid-tile/figure/button').click()
+selectFile = eyeBrowser.find_element_by_xpath('/html/body/app-mmiimagemanagement/app-initialview/div/app-imageuploader/div/div/div[3]/mat-grid-list/div/mat-grid-tile/figure/input')
+selectFile.send_keys(testFile)
