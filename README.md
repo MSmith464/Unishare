@@ -1,4 +1,4 @@
-**UniShare** - a program to automate our image exporting tasks.
+**UniShare - a program to automate our image exporting tasks.
 
 **The Problem**
 A special machine that we bring into our office once a month is used to take detailed scans of the patient's eyes.
