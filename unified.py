@@ -6,16 +6,31 @@ import secrets
 lastName = input("Enter the patient's last name and press ENTER: ")
 firstName = input("Enter the patient's first name and press ENTER: ")
 DoB = input ("Enter the patient's DoB in the form of MM/DD//YYYY and press ENTER: ")
-numPhotos = input("How many photos are we sending?  ")
+numPhotos = int(input("How many photos are we sending?  "))
 
 patient = lastName + ', ' + firstName
 
 #function to export the image selected from Unified
-def DownloadImage():
+def DownloadImage(num):
     moreOptions = browser.find_element_by_xpath('/html/body/div[1]/div[2]/div/div/div/div[2]/div[1]/button[8]')
     moreOptions.click()
+
+    #trying to find the OD/OS tag
+    test = browser.find_element_by_css_selector('body > div.navbar.navbar-fixed-bottom.transparent.ng-scope > div > div > div > ng-transclude > div.gallery-slider.ng-scope.ng-isolate-scope.ng-hide > div:nth-child(1) > a.gallery-item.noselect.ng-scope.selected > div.caption.noselect > span.right.ng-binding')
+    test1 = test.text
+    
+    print(test1)
     clickDownload = browser.find_element_by_xpath('/html/body/div[1]/div[2]/div/div/div/div[2]/div[1]/button[11]/i')
     clickDownload.click()
+
+    #create file name for right and left eye
+    imageName = ''
+    if num % 2 == 0:
+        imageName = patient + str(num) + 'OS.png'
+    else:
+        imageName = patient + str(num) +'OD.png'
+    
+    imageName = imageName.strip()
 
     currWindow = browser.window_handles[0]#save current browser tab before we switch to new tab
     newTab = browser.window_handles[1]  #switch to new tab containg the .png
@@ -23,7 +38,7 @@ def DownloadImage():
 
     imagePath = browser.find_element_by_xpath('/html/body/img')
     imageSrc = imagePath.get_attribute('src')
-    urllib.request.urlretrieve(imageSrc, 'C:/Users/jmorg/Downloads/test.png')   #save image to drive
+    urllib.request.urlretrieve(imageSrc, 'C:/Users/jmorg/Downloads/'+ imageName)   #save image to drive
 
     browser.close() #close newTab after we collect the image. Switch back to original tab.
     browser.switch_to_window(currWindow)
@@ -31,10 +46,20 @@ def DownloadImage():
 
 #Unified needs to unselect the current photo to select the next. 
 #To download another photo, reset must be called 
-def reset():
+def reset(num):
     #clicks the first square to bringphoto thumbnails back
     square = browser.find_element_by_xpath('/html/body/div[3]/div/div/div/ng-transclude/button/i').click() 
-    unselect = browser.find_element_by_xpath('/html/body/div[3]/div/div/div/ng-transclude/div[1]/div[1]/a[1]/div[2]').click()
+
+    if num == 1:
+        unselect = browser.find_element_by_xpath('/html/body/div[3]/div/div/div/ng-transclude/div[1]/div[1]/a[1]/div[2]')
+    elif num == 2:
+        unselect = browser.find_element_by_xpath('/html/body/div[3]/div/div/div/ng-transclude/div[1]/div[1]/a[2]')
+    elif num == 3: 
+        unselect = browser.find_element_by_xpath('/html/body/div[3]/div/div/div/ng-transclude/div[1]/div[1]/a[3]')
+    elif num == 4:
+        unselect = browser.find_element_by_xpath('/html/body/div[3]/div/div/div/ng-transclude/div[1]/div[1]/a[4]')
+
+    unselect.click()
 #end reset
 
 #webdriver to be used for exporting images from Unified
@@ -69,12 +94,25 @@ ptSelect.click()
 time.sleep(3)
 
 #select left most photo
-firstSelect = browser.find_element_by_xpath('/html/body/div[3]/div/div/div/ng-transclude/div[1]/div[1]/a[1]/img')
-firstSelect.click()
-time.sleep(4)
+def SelectImage(num):
 
-DownloadImage()
-reset()
+    if num == 1:
+        imageSelect = browser.find_element_by_xpath('/html/body/div[3]/div/div/div/ng-transclude/div[1]/div[1]/a[1]/img')
+    elif num == 2:
+        imageSelect = browser.find_element_by_xpath('/html/body/div[3]/div/div/div/ng-transclude/div[1]/div[1]/a[2]')
+    elif num == 3:
+        imageSelect = browser.find_element_by_xpath('/html/body/div[3]/div/div/div/ng-transclude/div[1]/div[1]/a[3]')
+    elif num == 4: 
+        imageSelect = browser.find_element_by_xpath('/html/body/div[3]/div/div/div/ng-transclude/div[1]/div[1]/a[4]')
+    else:
+        return
+
+    imageSelect.click()
+    DownloadImage(num)
+    reset(num)
+#end SelectImage()
+for x in range (1,numPhotos + 1):
+    SelectImage(x)
 time.sleep(2)
 #visual fields and gluacoma suspects will have 2 images per patient.
 #Mac Degen patients will only have one. Find a way to select images by dates?
