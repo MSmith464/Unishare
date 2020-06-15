@@ -2,6 +2,7 @@ from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 import secrets
 from time import sleep
+from unified import patient, DoB, numPhotos
 
 eyeBrowser = webdriver.Chrome('C:/Users/jmorg/Downloads/chromedriver_win32/chromedriver')
 eyeBrowser.get(secrets.eyeUrl)
@@ -19,7 +20,7 @@ sleep(4)
 #use search bar with patient name and DoB. The eyefinity database 
 # will put the closest match as the top result
 ptSearch = eyeBrowser.find_element_by_id('patientQuickSearch')
-ptSearch.send_keys(secrets.patient)
+ptSearch.send_keys(patient) #TODO search with DoB combined with patient name. 
 sleep(2)
 ptSearch.send_keys(Keys.ENTER) #top match is auto highlighted so we only need to send ENTER
 sleep(3)
@@ -38,3 +39,6 @@ studyButton = eyeBrowser.find_element_by_xpath('/html/body/app-mmiimagemanagemen
 sleep(3)
 selectFile = eyeBrowser.find_element_by_xpath('/html/body/app-mmiimagemanagement/app-initialview/div/app-imageuploader/div/div/div[3]/mat-grid-list/div/mat-grid-tile/figure/input')
 selectFile.send_keys(testFile)
+
+print(patient + ' ' + DoB) #Remove
+print("Number of ordered photos: " + numPhotos)#Remove

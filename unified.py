@@ -3,6 +3,13 @@ import time
 import urllib.request
 import secrets
 
+lastName = input("Enter the patient's last name and press ENTER: ")
+firstName = input("Enter the patient's first name and press ENTER: ")
+DoB = input ("Enter the patient's DoB in the form of MM/DD//YYYY and press ENTER: ")
+numPhotos = input("How many photos are we sending?  ")
+
+patient = lastName + ', ' + firstName
+
 #function to export the image selected from Unified
 def DownloadImage():
     moreOptions = browser.find_element_by_xpath('/html/body/div[1]/div[2]/div/div/div/div[2]/div[1]/button[8]')
@@ -53,7 +60,7 @@ UniLogin()
 
 #Acessing search bar once logged in
 searchBar = browser.find_element_by_id('search-input')
-searchBar.send_keys(secrets.patient)
+searchBar.send_keys(patient)
 time.sleep(3)
 
 #select matching patient
@@ -73,6 +80,6 @@ time.sleep(2)
 #Mac Degen patients will only have one. Find a way to select images by dates?
 
 browser.close()
-import eyefinity
+
 
 
