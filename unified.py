@@ -24,13 +24,9 @@ def DownloadImage(num):
     clickDownload.click()
 
     #create file name for right and left eye
-    imageName = ''
-    if num % 2 == 0:
-        imageName = patient + str(num) + 'OS.png'
-    else:
-        imageName = patient + str(num) +'OD.png'
+    imageName = patient + str(num) + '.png'
     
-    imageName = imageName.strip()
+    imageName = imageName.replace(' ', '')
 
     currWindow = browser.window_handles[0]#save current browser tab before we switch to new tab
     newTab = browser.window_handles[1]  #switch to new tab containg the .png
@@ -97,7 +93,7 @@ time.sleep(3)
 def SelectImage(num):
 
     if num == 1:
-        imageSelect = browser.find_element_by_xpath('/html/body/div[3]/div/div/div/ng-transclude/div[1]/div[1]/a[1]/img')
+        imageSelect = browser.find_element_by_xpath('/html/body/div[3]/div/div/div/ng-transclude/div[1]/div[1]/a[1]')
     elif num == 2:
         imageSelect = browser.find_element_by_xpath('/html/body/div[3]/div/div/div/ng-transclude/div[1]/div[1]/a[2]')
     elif num == 3:
@@ -106,7 +102,8 @@ def SelectImage(num):
         imageSelect = browser.find_element_by_xpath('/html/body/div[3]/div/div/div/ng-transclude/div[1]/div[1]/a[4]')
     else:
         return
-
+    
+    time.sleep(1)
     imageSelect.click()
     DownloadImage(num)
     reset(num)

@@ -20,8 +20,8 @@ sleep(4)
 #use search bar with patient name and DoB. The eyefinity database 
 # will put the closest match as the top result
 ptSearch = eyeBrowser.find_element_by_id('patientQuickSearch')
-ptSearch.send_keys(patient) #TODO search with DoB combined with patient name. 
-sleep(2)
+ptSearch.send_keys(patient + ' ' + DoB) #TODO search with DoB combined with patient name. 
+sleep(3)
 ptSearch.send_keys(Keys.ENTER) #top match is auto highlighted so we only need to send ENTER
 sleep(3)
 
@@ -34,11 +34,32 @@ studyHandle = eyeBrowser.window_handles[1]
 eyeBrowser.switch_to_window(studyHandle)
 sleep(3)
 
-testFile = 'C:/Users/jmorg/Downloads/test.png'
-studyButton = eyeBrowser.find_element_by_xpath('/html/body/app-mmiimagemanagement/app-initialview/div/div[1]/div[1]/app-studylistactions/div/div[2]/div[2]/button/span').click()
-sleep(3)
-selectFile = eyeBrowser.find_element_by_xpath('/html/body/app-mmiimagemanagement/app-initialview/div/app-imageuploader/div/div/div[3]/mat-grid-list/div/mat-grid-tile/figure/input')
-selectFile.send_keys(testFile)
+patientFile = "C:/Users/jmorg/Downloads/" + patient
+patientFile = patientFile.replace(" ", "")
 
-print(patient + ' ' + DoB) #Remove
-print("Number of ordered photos: " + numPhotos)#Remove
+def UploadImage(num):
+    studyButton = eyeBrowser.find_element_by_xpath('/html/body/app-mmiimagemanagement/app-initialview/div/div[1]/div[1]/app-studylistactions/div/div[2]/div[2]/button/span').click()
+    sleep(3)
+
+    selectFile = eyeBrowser.find_element_by_xpath('/html/body/app-mmiimagemanagement/app-initialview/div/app-imageuploader/div/div/div[3]/mat-grid-list/div/mat-grid-tile/figure/input')
+    selectFile.send_keys(imageList[num])
+    sleep(1)
+    
+    #ineraction with drop down menu to select test type
+    testType = eyeBrowser.find_element_by_class_name('mat-select-placeholder').click()
+    sleep(1)
+    visualField = eyeBrowser.find_element_by_xpath("*//span[contains(text(), 'Visual Fields') and @class='mat-option-text']").click()
+    sleep(1)
+
+    uploadClick = eyeBrowser.find_element_by_xpath("*//span[contains(text(), 'Upload') and @class='mat-button-wrapper']").click()
+    sleep(2)
+
+#Create a list of all images to be uploaded
+imageList = []
+for num in range(numPhotos):
+    imageList.append(patientFile + str(num + 1) + ".png")
+    print (imageList[num]) #Remove
+    UploadImage(num)
+
+
+print("Number of ordered photos: " + str(numPhotos))#Remove
