@@ -3,7 +3,7 @@ from selenium.webdriver.common.keys import Keys
 import secrets
 from time import sleep
 from unified import patient, DoB, numPhotos
-
+    
 eyeBrowser = webdriver.Chrome('C:/Users/jmorg/Downloads/chromedriver_win32/chromedriver')
 eyeBrowser.get(secrets.eyeUrl)
 sleep(3)

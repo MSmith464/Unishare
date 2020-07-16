@@ -3,12 +3,6 @@ import time
 import urllib.request
 import secrets
 
-lastName = input("Enter the patient's last name and press ENTER: ")
-firstName = input("Enter the patient's first name and press ENTER: ")
-DoB = input ("Enter the patient's DoB in the form of MM/DD//YYYY and press ENTER: ")
-numPhotos = int(input("How many photos are we sending?  "))
-patient = lastName + ', ' + firstName
-
 #function to export the image selected from Unified
 def DownloadImage(num):
     moreOptions = browser.find_element_by_xpath('/html/body/div[1]/div[2]/div/div/div/div[2]/div[1]/button[8]')
@@ -64,8 +58,6 @@ def StartBrowser():
     browser.get('http://unified.gallery')
     time.sleep(6)
 
-StartBrowser()
-
 #Login to Unified.gallery
 def UniLogin():
     #Variables for the username,password, and login elements
@@ -79,19 +71,6 @@ def UniLogin():
     loginButton.click()
     time.sleep(4)
 #end UniLogin
-
-UniLogin()
-
-#Acessing search bar once logged in
-time.sleep(3)
-searchBar = browser.find_element_by_id('search-input')
-searchBar.send_keys(patient)
-time.sleep(3)
-
-#select matching patient
-ptSelect = browser.find_element_by_xpath('/html/body/div[1]/div[1]/div/div[2]/li/a')
-ptSelect.click()
-time.sleep(3)
 
 #select left most photo
 def SelectImage(num):
@@ -112,13 +91,40 @@ def SelectImage(num):
     DownloadImage(num)
     reset(num)
 #end SelectImage()
-for x in range (1,numPhotos + 1):
-    SelectImage(x)
-time.sleep(2)
+
 #visual fields and gluacoma suspects will have 2 images per patient.
 #Mac Degen patients will only have one. Find a way to select images by dates?
 
-browser.close()
 
+def main():
 
+    lastName = input("Enter the patient's last name and press ENTER: ")
+    firstName = input("Enter the patient's first name and press ENTER: ")
+    DoB = input ("Enter the patient's DoB in the form of MM/DD//YYYY and press ENTER: ")
+    numPhotos = int(input("How many photos are we sending?  "))
+    patient = lastName + ', ' + firstName
 
+    #initiate Browser
+    StartBrowser()
+
+    UniLogin()
+
+    #Acessing search bar once logged in
+    time.sleep(3)
+    searchBar = browser.find_element_by_id('search-input')
+    searchBar.send_keys(patient)
+    time.sleep(3)
+
+    #select matching patient
+    ptSelect = browser.find_element_by_xpath('/html/body/div[1]/div[1]/div/div[2]/li/a')
+    ptSelect.click()
+    time.sleep(3)
+
+    for x in range (1,numPhotos + 1):
+        SelectImage(x)
+    time.sleep(2)
+
+    browser.close()
+
+if __name__ == "__main__":
+    main()

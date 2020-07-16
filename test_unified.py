@@ -10,4 +10,4 @@ import secrets
 
 from unified import StartBrowser
 
-StartBrowser();
+StartBrowser()
