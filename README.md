@@ -19,4 +19,4 @@ Launching this program should be the only task left to the user after patient te
 
 UniShare uses the Selenium library for Python.
 Selenium makes it very easy to access and interact with HTML and CSS elements. 
-All usernames, passwords, and patient test data are imported from a private file... So make ya own!
+All usernames, passwords, and patient test data are imported from a private file.
