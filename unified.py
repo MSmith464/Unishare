@@ -7,7 +7,6 @@ lastName = input("Enter the patient's last name and press ENTER: ")
 firstName = input("Enter the patient's first name and press ENTER: ")
 DoB = input ("Enter the patient's DoB in the form of MM/DD//YYYY and press ENTER: ")
 numPhotos = int(input("How many photos are we sending?  "))
-
 patient = lastName + ', ' + firstName
 
 #function to export the image selected from Unified
@@ -59,9 +58,13 @@ def reset(num):
 #end reset
 
 #webdriver to be used for exporting images from Unified
-browser = webdriver.Chrome('C:/Users//jmorg/Downloads/chromedriver_win32/chromedriver')
-browser.get('http://unified.gallery')
-time.sleep(6)
+def StartBrowser():
+    global browser
+    browser = webdriver.Chrome('C:/Users//jmorg/Downloads/chromedriver_win32/chromedriver')
+    browser.get('http://unified.gallery')
+    time.sleep(6)
+
+StartBrowser()
 
 #Login to Unified.gallery
 def UniLogin():
@@ -80,6 +83,7 @@ def UniLogin():
 UniLogin()
 
 #Acessing search bar once logged in
+time.sleep(3)
 searchBar = browser.find_element_by_id('search-input')
 searchBar.send_keys(patient)
 time.sleep(3)
