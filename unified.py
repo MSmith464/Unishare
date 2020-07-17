@@ -69,7 +69,7 @@ def UniLogin():
     userField.send_keys(secrets.uniUser)
     passField.send_keys(secrets.uniPass)
     loginButton.click()
-    time.sleep(4)
+    time.sleep(7)
 #end UniLogin
 
 #select left most photo
@@ -102,6 +102,7 @@ def main():
     firstName = input("Enter the patient's first name and press ENTER: ")
     DoB = input ("Enter the patient's DoB in the form of MM/DD//YYYY and press ENTER: ")
     numPhotos = int(input("How many photos are we sending?  "))
+    global patient
     patient = lastName + ', ' + firstName
 
     #initiate Browser
@@ -109,12 +110,13 @@ def main():
 
     UniLogin()
 
+    #make into funciton
     #Acessing search bar once logged in
-    time.sleep(3)
     searchBar = browser.find_element_by_id('search-input')
     searchBar.send_keys(patient)
     time.sleep(3)
 
+    #make into function
     #select matching patient
     ptSelect = browser.find_element_by_xpath('/html/body/div[1]/div[1]/div/div[2]/li/a')
     ptSelect.click()
