@@ -4,7 +4,7 @@ import urllib.request
 import secrets
 
 #function to export the image selected from Unified
-def DownloadImage(num):
+def downloadImage(browser, patient, num):
     moreOptions = browser.find_element_by_xpath('/html/body/div[1]/div[2]/div/div/div/div[2]/div[1]/button[8]')
     moreOptions.click()
 
@@ -35,7 +35,7 @@ def DownloadImage(num):
 
 #Unified needs to unselect the current photo to select the next. 
 #To download another photo, reset must be called 
-def reset(num):
+def reset(browser, num):
     #clicks the first square to bringphoto thumbnails back
     square = browser.find_element_by_xpath('/html/body/div[3]/div/div/div/ng-transclude/button/i').click() 
 
@@ -52,14 +52,14 @@ def reset(num):
 #end reset
 
 #webdriver to be used for exporting images from Unified
-def StartBrowser():
-    global browser
+def startBrowser():
     browser = webdriver.Chrome('C:/Users//jmorg/Downloads/chromedriver_win32/chromedriver')
     browser.get('http://unified.gallery')
     time.sleep(6)
+    return browser
 
 #Login to Unified.gallery
-def UniLogin():
+def uniLogin(browser):
     #Variables for the username,password, and login elements
     userField = browser.find_element_by_xpath('//*[@id="login-container"]/div/div[2]/div/div/form/div[1]/input')  
     passField = browser.find_element_by_xpath('//*[@id="login-container"]/div/div[2]/div/div/form/div[2]/input') 
@@ -73,7 +73,7 @@ def UniLogin():
 #end UniLogin
 
 #select left most photo
-def SelectImage(num):
+def selectImage(browser, patient, num):
 
     if num == 1:
         imageSelect = browser.find_element_by_xpath('/html/body/div[3]/div/div/div/ng-transclude/div[1]/div[1]/a[1]')
@@ -88,42 +88,47 @@ def SelectImage(num):
     
     time.sleep(1)
     imageSelect.click()
-    DownloadImage(num)
-    reset(num)
+    downloadImage(browser, patient, num)
+    reset(browser, num)
 #end SelectImage()
 
 #visual fields and gluacoma suspects will have 2 images per patient.
 #Mac Degen patients will only have one. Find a way to select images by dates?
 
-
-def main():
-
-    lastName = input("Enter the patient's last name and press ENTER: ")
-    firstName = input("Enter the patient's first name and press ENTER: ")
-    DoB = input ("Enter the patient's DoB in the form of MM/DD//YYYY and press ENTER: ")
-    numPhotos = int(input("How many photos are we sending?  "))
-    global patient
-    patient = lastName + ', ' + firstName
-
-    #initiate Browser
-    StartBrowser()
-
-    UniLogin()
-
-    #make into funciton
+def findPatient(browser, patient):
     #Acessing search bar once logged in
     searchBar = browser.find_element_by_id('search-input')
     searchBar.send_keys(patient)
     time.sleep(3)
 
-    #make into function
+def selectPatient(browser):
     #select matching patient
     ptSelect = browser.find_element_by_xpath('/html/body/div[1]/div[1]/div/div[2]/li/a')
     ptSelect.click()
     time.sleep(3)
 
+def main():
+
+    lastName = input("Enter the patient's last name and press ENTER: ")
+    firstName = input("Enter the patient's first name and press ENTER: ")
+
+    #only eyefinity.py will use DoB
+    DoB = input ("Enter the patient's DoB in the form of MM/DD//YYYY and press ENTER: ") 
+    numPhotos = int(input("How many photos are we sending?  "))
+    patient = lastName + ', ' + firstName
+
+    #initiate Browser
+    browser = startBrowser()
+
+    #log in to unified
+    uniLogin(browser)
+
+    findPatient(browser, patient)
+
+    selectPatient(browser)
+
     for x in range (1,numPhotos + 1):
-        SelectImage(x)
+        selectImage(browser, patient, x)
     time.sleep(2)
 
     browser.close()

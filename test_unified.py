@@ -10,22 +10,45 @@ import unittest
 import unified
 
 class TestUnified (unittest.TestCase):
-    def test_StartBrowser(self):
-        unified.StartBrowser()
 
-    def test_UniLogin(self):
-        unified.UniLogin()
+    def test_DownloadSingleImage(self):
+        patient = 'Test, Test'
+        browser = unified.startBrowser()
 
-    def test_findPatient(self):
-        patient = 'test, test'
-        #Acessing search bar once logged in
-        searchBar = browser.find_element_by_id('search-input')
-        searchBar.send_keys(patient)
-        time.sleep(3)
+        unified.uniLogin(browser)
 
-    def test_selectMatchingPatient(self):
-        #select matching patient
-        ptSelect = browser.find_element_by_xpath('/html/body/div[1]/div[1]/div/div[2]/li/a')
-        ptSelect.click()
-        time.sleep(3)
+        unified.findPatient(browser, patient)
+        unified.selectPatient(browser)
+
+        num = 1
+        unified.selectImage(browser, patient, num)
+        browser.close()
+
+    def test_DownloadTwoImages(self):
+        patient = 'Test, Test'
+        browser = unified.startBrowser()
+
+        unified.uniLogin(browser)
+
+        unified.findPatient(browser, patient)
+        unified.selectPatient(browser)
+
+        num = 2
+        unified.selectImage(browser, patient, num)
+        browser.close()
+
+    def test_DownloadThreeImages(self):
+        patient = 'Test, Test'
+        browser = unified.startBrowser()
+
+        unified.uniLogin(browser)
+
+        unified.findPatient(browser, patient)
+        unified.selectPatient(browser)
+
+        num = 3
+        unified.selectImage(browser, patient, num)
+        browser.close()
+    
+    
 
