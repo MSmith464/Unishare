@@ -2,3 +2,6 @@ secrets.py
 
 __pycache__/eyefinity.cpython-39.pyc
 __pycache__/secrets.cpython-39.pyc
+__pycache__/unified.cpython-39.pyc
+__pycache__/test_unified.cpython-39.pyc
+__pycache__/test_eyefinity.cpython-39.pyc

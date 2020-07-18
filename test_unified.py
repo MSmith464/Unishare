@@ -3,13 +3,11 @@
 #########################
 
 from selenium import webdriver
-import time
-import urllib.request
 import secrets
 import unittest
 import unified
 
-class TestUnified (unittest.TestCase):
+class TestUnified(unittest.TestCase):
 
     def test_DownloadSingleImage(self):
         patient = 'Test, Test'
