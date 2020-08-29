@@ -24,6 +24,8 @@ All usernames, passwords, and patient test data are imported from a private file
 
 **How to Install**
 
+Python Version 3.9
+
 You will need to download the Selenium package for python which can be found here: https://pypi.org/project/selenium/
 or if you have pip, simply use:  *"pip install selenium"*. You will also need the urllib package to make http requests for the images.
 
