@@ -2,7 +2,7 @@
 
 **The Problem**
 
-A special machine that we bring into our office once a month is used to take detailed scans of the patient's eyes.
+An optometric testing machine we have in our office is used to take detailed scans of the patient's eyes.
 Along with the scans, visual field testing is performed on the glaucoma suspects. The results of these tests are presented
 as images on the testing devices.
 
